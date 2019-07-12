@@ -1,0 +1,104 @@
+Create procedure spAddQuestion
+@q_name nvarchar(50) = null,
+@q_desc nvarchar(50) = null,
+@difficulty int = null,
+@topic nvarchar(50) = null,
+@opa nvarchar(50) = null,
+@opb nvarchar(50) = null,
+@opc nvarchar(50) = null,
+@opd nvarchar(50) = null,
+@correct nvarchar(50) = null
+as
+Begin
+	Insert into tbl_question(q_name, q_desc, difficulty, topic, opa, opb, opc, opd, correct)
+	Values(@q_name, @q_desc, @difficulty, @topic, @opa, @opb, @opc, @opd, @correct)
+End
+
+
+
+
+
+Create procedure spAddUser
+@us_id int = null,
+@us_fname nvarchar(50) = null,
+@us_lname nvarchar(50) = null,
+@us_age int = null,
+@us_gender nvarchar(50) = null,
+@us_pass nvarchar(50) = null,
+@us_address nvarchar(50) = null,
+@us_phone int = null
+as
+Begin
+	Insert into tbl_user(us_id, us_fname, us_lname, us_age, us_gender, us_pass, us_address, us_phone)
+	Values(@us_id, @us_fname, @us_lname, @us_age, @us_gender, @us_pass, @us_address, @us_phone)
+End
+
+
+
+
+
+
+Create procedure spDeleteQuestion
+@q_id int
+as
+Begin
+	Delete from tbl_question
+	where q_id=@q_id
+End
+
+
+
+
+
+
+Create procedure spGetAllAdmins
+as
+Begin
+	Select ad_id, ad_name, ad_pass
+	From tbl_admin
+End
+
+
+
+
+
+ALTER procedure [dbo].[spGetAllUsers]
+as
+Begin
+	Select us_id, us_fname, us_lname, us_age, us_gender, us_pass, us_address, us_phone
+	From tbl_user
+End
+
+
+
+
+
+
+Create procedure spUpdateQuestion
+@q_id int,
+@q_name nvarchar(50),
+@q_desc nvarchar(50),
+@difficulty int,
+@topic nvarchar(50),
+@opa nvarchar(50),
+@opb nvarchar(50),
+@opc nvarchar(50),
+@opd nvarchar(50),
+@correct nvarchar(50)
+as
+Begin
+	Update tbl_question
+	Set q_name=@q_name, q_desc=@q_desc, difficulty=@difficulty, topic=@topic, opa=@opa, opb=@opb, opc=@opc, opd=@opd, correct=@correct 
+	where q_id=@q_id
+End
+
+
+
+
+
+Create procedure spViewQuestions
+as
+Begin
+	Select q_id, q_name, q_desc, difficulty, topic, opa, opb, opc, opd, correct
+	From tbl_question
+End
