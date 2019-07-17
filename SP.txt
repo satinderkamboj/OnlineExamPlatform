@@ -1,0 +1,35 @@
+create procedure spViewQuestionPapers
+as
+Begin
+	Select qp_id, qp_name, qp_desc,qp_date,qp_duration,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10
+	From tbl_quespaper
+End
+
+
+
+
+
+
+
+create procedure spAddReport
+@us_id int=null,
+@qp_name nvarchar(50) = null,
+@marks int=null
+as
+Begin
+	Insert into tbl_report(us_id, qp_name,marks)
+	Values(@us_id, @qp_name,@marks)
+End
+
+
+
+
+
+
+
+create procedure spViewReport
+as
+Begin
+	Select report_id, us_id, qp_name,marks
+	From tbl_report
+End
