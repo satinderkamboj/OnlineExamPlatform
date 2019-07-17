@@ -1,0 +1,100 @@
+@model BusinessLayer.Question
+
+@{
+    ViewBag.Title = "QuizStart";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>QuizStart</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Question</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.q_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.q_name)
+                @Html.DisplayFor(model => model.q_name)
+                @Html.ValidationMessageFor(model => model.q_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.q_desc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.q_desc)
+                @Html.DisplayFor(model => model.q_desc)
+                @Html.ValidationMessageFor(model => model.q_desc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.difficulty, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.difficulty)
+                @Html.DisplayFor(model => model.difficulty)
+                @Html.ValidationMessageFor(model => model.difficulty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.topic, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.topic)
+                @Html.DisplayFor(model => model.topic)
+                @Html.ValidationMessageFor(model => model.topic, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.opa, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span>@Html.RadioButtonFor(model => model.opa, new { htmlAttributes = new { @class = "form-control" } })@Model.opa</span>
+                    @Html.ValidationMessageFor(model => model.opa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.opb, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span>@Html.RadioButtonFor(model => model.opb, new { htmlAttributes = new { @class = "form-control" } })@Model.opb</span>
+                    @Html.ValidationMessageFor(model => model.opb, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.opc, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span>@Html.RadioButtonFor(model => model.opc, new { htmlAttributes = new { @class = "form-control" } })@Model.opc</span>
+                    @Html.ValidationMessageFor(model => model.opc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.opd, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span>@Html.RadioButtonFor(model => model.opd, new { htmlAttributes = new { @class = "form-control" } })@Model.opd</span>
+                    @Html.ValidationMessageFor(model => model.opd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.correct)
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

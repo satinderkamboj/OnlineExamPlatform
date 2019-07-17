@@ -1,0 +1,39 @@
+@model IEnumerable<BusinessLayer.Report>
+
+@{
+    ViewBag.Title = "ViewReport";
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>ViewReport</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.us_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qp_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.marks)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.us_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qp_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.marks)
+        </td>
+        
+    </tr>
+}
+
+</table>

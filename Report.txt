@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLayer
+{
+    public class Report
+    {
+        [Key]
+        public int report_id { get; set; }
+
+        [Display(Name = "User id")]
+        [Required]
+        public int us_id { get; set; }
+
+        [Required]
+        [Display(Name = "Question paper")]
+        public string qp_name { get; set; }
+
+        [Required]
+        public int marks { get; set; }
+    }
+}

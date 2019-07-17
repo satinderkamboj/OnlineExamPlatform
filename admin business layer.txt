@@ -1,0 +1,445 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLayer
+{
+    public class AdminBusinessLayer
+    {
+        public IEnumerable<Admin> Admin
+        {
+            get
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+                List<Admin> admins = new List<Admin>();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("spGetAllAdmins", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Admin ad = new Admin();
+                        ad.ad_id = Convert.ToInt32(rdr["ad_id"]);
+                        ad.ad_name = rdr["ad_name"].ToString();
+                        ad.ad_pass = rdr["ad_pass"].ToString();
+                        admins.Add(ad);
+                    }
+                }
+                return admins;
+            }
+        }
+        public IEnumerable<Question> ViewQuestions
+        {
+            get
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+                List<Question> employees = new List<Question>();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("spViewQuestions", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Question ques = new Question();
+                        ques.q_id = Convert.ToInt32(rdr["q_id"]);
+                        ques.q_name = rdr["q_name"].ToString();
+                        ques.q_desc = rdr["q_desc"].ToString();
+                        ques.difficulty = Convert.ToInt32(rdr["difficulty"]);
+                        ques.topic = rdr["topic"].ToString();
+                        ques.opa = rdr["opa"].ToString();
+                        ques.opb = rdr["opb"].ToString();
+                        ques.opc = rdr["opc"].ToString();
+                        ques.opd = rdr["opd"].ToString();
+                        ques.correct = rdr["correct"].ToString();
+                        employees.Add(ques);
+                    }
+                }
+                return employees;
+            }
+        }
+
+        public IEnumerable<QuestionPaper> GetQuestionPapers
+        {
+            get
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+                List<QuestionPaper> employees = new List<QuestionPaper>();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("spViewQuestionPapers", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        QuestionPaper ques = new QuestionPaper();
+                        ques.qp_id = Convert.ToInt32(rdr["qp_id"]);
+                        ques.qp_name = rdr["qp_name"].ToString();
+                        ques.qp_desc = rdr["qp_desc"].ToString();
+                        ques.qp_date = (DateTime)(rdr["qp_date"]);
+                        ques.duration = Convert.ToInt32( rdr["qp_duration"].ToString());
+                        ques.q1 = Convert.ToInt32(rdr["q1"].ToString());
+                        ques.q2 = Convert.ToInt32(rdr["q2"].ToString());
+                        ques.q3 = Convert.ToInt32(rdr["q3"].ToString());
+                        ques.q4 = Convert.ToInt32(rdr["q4"].ToString());
+                        ques.q5 = Convert.ToInt32(rdr["q5"].ToString());
+                        ques.q6 = Convert.ToInt32(rdr["q6"].ToString());
+                        ques.q7 = Convert.ToInt32(rdr["q7"].ToString());
+                        ques.q8 = Convert.ToInt32(rdr["q8"].ToString());
+                        ques.q9 = Convert.ToInt32(rdr["q9"].ToString());
+                        ques.q10 = Convert.ToInt32(rdr["q10"].ToString());
+                        employees.Add(ques);
+                    }
+                }
+                return employees;
+            }
+        }
+
+
+        public void AddQuestion(Question question)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spAddQuestion", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramq_name = new SqlParameter();
+                paramq_name.ParameterName = "@q_name";
+                paramq_name.Value = question.q_name;
+                cmd.Parameters.Add(paramq_name);
+
+                SqlParameter paramq_desc = new SqlParameter();
+                paramq_desc.ParameterName = "@q_desc";
+                paramq_desc.Value = question.q_desc;
+                cmd.Parameters.Add(paramq_desc);
+
+                SqlParameter paramdifficulty = new SqlParameter();
+                paramdifficulty.ParameterName = "@difficulty";
+                paramdifficulty.Value = question.difficulty;
+                cmd.Parameters.Add(paramdifficulty);
+
+                SqlParameter paramtopic = new SqlParameter();
+                paramtopic.ParameterName = "@topic";
+                paramtopic.Value = question.topic;
+                cmd.Parameters.Add(paramtopic);
+
+                SqlParameter paramopa = new SqlParameter();
+                paramopa.ParameterName = "@opa";
+                paramopa.Value = question.opa;
+                cmd.Parameters.Add(paramopa);
+
+                SqlParameter paramopb = new SqlParameter();
+                paramopb.ParameterName = "@opb";
+                paramopb.Value = question.opb;
+                cmd.Parameters.Add(paramopb);
+
+                SqlParameter paramopc = new SqlParameter();
+                paramopc.ParameterName = "@opc";
+                paramopc.Value = question.opc;
+                cmd.Parameters.Add(paramopc);
+
+                SqlParameter paramopd = new SqlParameter();
+                paramopd.ParameterName = "@opd";
+                paramopd.Value = question.opd;
+                cmd.Parameters.Add(paramopd);
+
+                SqlParameter paramcorrect = new SqlParameter();
+                paramcorrect.ParameterName = "@correct";
+                paramcorrect.Value = question.correct;
+                cmd.Parameters.Add(paramcorrect);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void UpdateQuestion(Question question)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spUpdateQuestion", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramq_id = new SqlParameter();
+                paramq_id.ParameterName = "@q_id";
+                paramq_id.Value = question.q_id;
+                cmd.Parameters.Add(paramq_id);
+
+                SqlParameter paramq_name = new SqlParameter();
+                paramq_name.ParameterName = "@q_name";
+                paramq_name.Value = question.q_name;
+                cmd.Parameters.Add(paramq_name);
+
+                SqlParameter paramq_desc = new SqlParameter();
+                paramq_desc.ParameterName = "@q_desc";
+                paramq_desc.Value = question.q_desc;
+                cmd.Parameters.Add(paramq_desc);
+
+                SqlParameter paramdifficulty = new SqlParameter();
+                paramdifficulty.ParameterName = "@difficulty";
+                paramdifficulty.Value = question.difficulty;
+                cmd.Parameters.Add(paramdifficulty);
+
+                SqlParameter paramtopic = new SqlParameter();
+                paramtopic.ParameterName = "@topic";
+                paramtopic.Value = question.topic;
+                cmd.Parameters.Add(paramtopic);
+
+                SqlParameter paramopa = new SqlParameter();
+                paramopa.ParameterName = "@opa";
+                paramopa.Value = question.opa;
+                cmd.Parameters.Add(paramopa);
+
+                SqlParameter paramopb = new SqlParameter();
+                paramopb.ParameterName = "@opb";
+                paramopb.Value = question.opb;
+                cmd.Parameters.Add(paramopb);
+
+                SqlParameter paramopc = new SqlParameter();
+                paramopc.ParameterName = "@opc";
+                paramopc.Value = question.opc;
+                cmd.Parameters.Add(paramopc);
+
+                SqlParameter paramopd = new SqlParameter();
+                paramopd.ParameterName = "@opd";
+                paramopd.Value = question.opd;
+                cmd.Parameters.Add(paramopd);
+
+                SqlParameter paramcorrect = new SqlParameter();
+                paramcorrect.ParameterName = "@correct";
+                paramcorrect.Value = question.correct;
+                cmd.Parameters.Add(paramcorrect);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void DeleteQuestion(int q_id)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spDeleteQuestion", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramq_id = new SqlParameter();
+                paramq_id.ParameterName = "@q_id";
+                paramq_id.Value = q_id;
+                cmd.Parameters.Add(paramq_id);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void AddUser(User user)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spAddUser", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramus_id = new SqlParameter();
+                paramus_id.ParameterName = "@us_id";
+                paramus_id.Value = user.us_id;
+                cmd.Parameters.Add(paramus_id);
+
+                SqlParameter paramus_fname = new SqlParameter();
+                paramus_fname.ParameterName = "@us_fname";
+                paramus_fname.Value = user.us_fname;
+                cmd.Parameters.Add(paramus_fname);
+
+                SqlParameter paramus_lname = new SqlParameter();
+                paramus_lname.ParameterName = "@us_lname";
+                paramus_lname.Value = user.us_lname;
+                cmd.Parameters.Add(paramus_lname);
+
+                SqlParameter paramus_age = new SqlParameter();
+                paramus_age.ParameterName = "@us_age";
+                paramus_age.Value = user.us_age;
+                cmd.Parameters.Add(paramus_age);
+
+                SqlParameter paramus_gender = new SqlParameter();
+                paramus_gender.ParameterName = "@us_gender";
+                paramus_gender.Value = user.us_gender;
+                cmd.Parameters.Add(paramus_gender);
+
+                SqlParameter paramus_pass = new SqlParameter();
+                paramus_pass.ParameterName = "@us_pass";
+                paramus_pass.Value = user.us_pass;
+                cmd.Parameters.Add(paramus_pass);
+
+                SqlParameter paramus_address = new SqlParameter();
+                paramus_address.ParameterName = "@us_address";
+                paramus_address.Value = user.us_address;
+                cmd.Parameters.Add(paramus_address);
+
+                SqlParameter paramus_phone = new SqlParameter();
+                paramus_phone.ParameterName = "@us_phone";
+                paramus_phone.Value = user.us_phone;
+                cmd.Parameters.Add(paramus_phone);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public IEnumerable<User> User
+        {
+            get
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+                List<User> users = new List<User>();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("spGetAllUsers", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        User user = new User();
+
+                        user.us_id = Convert.ToInt32(rdr["us_id"]);
+                        user.us_fname = rdr["us_fname"].ToString();
+                        user.us_lname = rdr["us_lname"].ToString();
+                        user.us_age = Convert.ToInt32(rdr["us_age"]);
+                        user.us_gender = rdr["us_gender"].ToString();
+                        user.us_pass = rdr["us_pass"].ToString();
+                        user.us_address = rdr["us_address"].ToString();
+                        user.us_phone = Convert.ToInt32(rdr["us_phone"]);
+
+                        users.Add(user);
+                    }
+                }
+                return users;
+            }
+        }
+
+
+
+
+
+        public void AddReport(Report report)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spAddReport", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramq_desc = new SqlParameter();
+                paramq_desc.ParameterName = "@us_id";
+                paramq_desc.Value = report.us_id;
+                cmd.Parameters.Add(paramq_desc);
+
+                SqlParameter paramdifficulty = new SqlParameter();
+                paramdifficulty.ParameterName = "@qp_name";
+                paramdifficulty.Value = report.qp_name;
+                cmd.Parameters.Add(paramdifficulty);
+
+                SqlParameter paramtopic = new SqlParameter();
+                paramtopic.ParameterName = "@marks";
+                paramtopic.Value = report.marks;
+                cmd.Parameters.Add(paramtopic);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+
+
+
+
+
+        public IEnumerable<Report> getReportById(int us_id)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+            List<Report> repList = new List<Report>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spViewReport", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (us_id == Convert.ToInt32(rdr["us_id"]))
+                    {
+                        Report rep = new Report();
+                        rep.us_id = Convert.ToInt32(rdr["us_id"]);
+                        rep.qp_name = rdr["qp_name"].ToString();
+                        rep.marks = Convert.ToInt32(rdr["marks"]);
+                        repList.Add(rep);
+                    }
+
+                }
+            }
+            return repList;
+        }
+
+
+
+
+
+
+
+
+
+        public Question getQuestionById(int q_id)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DBOE"].ConnectionString;
+            Question ques = new Question();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("spViewQuestions", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                
+                while (rdr.Read())
+                {
+                    if (q_id == Convert.ToInt32(rdr["q_id"]))
+                    {
+                        ques.q_id = Convert.ToInt32(rdr["q_id"]);
+                        ques.q_name = rdr["q_name"].ToString();
+                        ques.q_desc = rdr["q_desc"].ToString();
+                        ques.difficulty = Convert.ToInt32(rdr["difficulty"]);
+                        ques.topic = rdr["topic"].ToString();
+                        ques.opa = rdr["opa"].ToString();
+                        ques.opb = rdr["opb"].ToString();
+                        ques.opc = rdr["opc"].ToString();
+                        ques.opd = rdr["opd"].ToString();
+                        ques.correct = rdr["correct"].ToString();
+                    }
+                    
+                }
+            }
+            return ques;
+        }
+
+
+    }
+}

@@ -1,0 +1,17 @@
+
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<html>
+<head>
+
+</head>
+<body>
+    <div>
+        <h1>Thankyou for attempting Exam</h1>
+        <h2>Your score is @Session["Score"]</h2>
+    </div>
+</body>
+</html>
+@Html.ActionLink("Save results","save")
